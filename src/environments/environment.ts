@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api: "http://LAPTOPIT:3000/"
+  api: "http://JOKSAN-IT:3000/"
 };
 
 /*
