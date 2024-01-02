@@ -1,0 +1,72 @@
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar"
+            nzCollapsible
+            nzWidth="256px"
+            nzBreakpoint="md"
+            [(nzCollapsed)]="isCollapsed"
+            [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <a href="http://falconingenieria.com/" target="_blank">
+        <img src="../../../../assets/Images/logo2.png" alt="logo" >
+        <h1>GILDAN-BECO-ENEE</h1>
+      </a>
+
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+
+      <div routerLink="welcome" nz-menu-item nzMatchRouter>
+        <li>
+            <i nz-icon nzType="home"></i>
+            <span >Inicio</span>
+        </li>
+      </div>
+
+      <div routerLink="reports" nz-menu-item nzMatchRouter>
+        <li>
+            <i nz-icon nzType="file-text"></i>
+            <span >Constancias</span>
+        </li>
+      </div>
+
+      <div nz-menu-item nzMatchRouter (click)="endSession()">
+          <li>
+              <i nz-icon nzType="poweroff" ></i>
+              <span >Cerrar session</span>
+          </li>
+
+      </div>
+
+      <!-- <div nz-menu-item nzMatchRouter>
+        <li>
+            <i nz-icon nzType="setting"></i>
+          <span >Configuracion</span>1|°!2Q3ZS6347
+        </li>
+      </div> -->
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <i class="trigger"
+               nz-icon
+               [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            ></i>
+
+        </span>
+      <span class="header-title">SISTEMA DE CONSTANCIAS GILDAN BECO-ENEE</span>
+      </div>
+
+    </nz-header>
+    <nz-content>
+
+      <div class="inner-content">
+
+        <router-outlet></router-outlet>
+        <nz-back-top [nzVisibilityHeight]="100">
+        </nz-back-top>
+      </div>
+
+    </nz-content>
+  </nz-layout>
+</nz-layout>

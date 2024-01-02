@@ -1,0 +1,28 @@
+<form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+
+    <div nz-row class="logo-container">
+        <div nz-col [nzSpan]="12">
+            <!-- <img class="Logo" src="../../../../../assets/Images/Solar2.png" alt=""> -->
+            <img class="Logo" src="assets/Images/Logo2.png" alt="">
+        </div>
+    </div>
+    <nz-form-item>
+
+        <nz-form-control nzErrorTip="Please input your username!">
+        <nz-input-group nzPrefixIcon="user">
+            <input nz-input type="text" formControlName="identificator" placeholder="Username or email" nzBorderless />
+        </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your Password!">
+        <nz-input-group nzPrefixIcon="lock"  >
+            <input nz-input type="password" formControlName="password" placeholder="Password" nzBorderless />
+        </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <button [disabled]="validateForm.invalid" nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
+    <a [routerLink]="['register']" style="text-align: center;"> <p>Registrate ahora!</p> </a>
+    <a [routerLink]="['generate-code']"  style="text-align: center;"> <p>Olvide mi contraseña</p> </a>
+
+</form>

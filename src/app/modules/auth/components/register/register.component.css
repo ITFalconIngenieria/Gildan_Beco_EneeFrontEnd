@@ -1,0 +1,53 @@
+.inputLarge{
+    width: 476px;
+    display: table-cell; 
+    vertical-align: middle;
+    border: 1px solid #ccc;
+}
+.inputMedium{
+    width: 230px;
+    display: table-cell; 
+    vertical-align: middle;
+    border: 1px solid #ccc;
+}
+
+[nz-form] {
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 520px;
+    transform: translate(-50%, -50%);   
+} 
+
+@media (max-width: 1300px){
+    [nz-form] {
+        width: 90%;  
+    }
+
+}
+
+.phone-select {
+width: 100px;
+}
+
+.register-are {
+margin-bottom: 8px;
+}
+
+.container-bordered {   
+    border-color: #aaaaaa;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 10%;
+    box-shadow: inset;
+    padding-right:  10px;
+    padding-bottom: 10px;
+    -webkit-box-shadow: 2px 2px 5px #999;
+    -moz-box-shadow: 2px 2px 5px #999;
+    filter: shadow(color=#999999, direction=135, strength=2);
+    background-color: white;
+}
+h3 {
+    text-align: center;
+}

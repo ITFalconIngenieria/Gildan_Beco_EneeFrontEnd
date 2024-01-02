@@ -1,0 +1,27 @@
+
+<form nz-form [formGroup]="validateForm" class="login-form">
+
+    <h3>Verificar codigo</h3>
+    <div nz-row class="logo-container">
+        <div nz-col [nzSpan]="12">
+            <!-- <img class="Logo" src="../../../../../assets/Images/Solar2.png" alt=""> -->
+            <!-- <img class="Logo" src="assets/Images/Solar2.png" alt=""> -->
+            <img class="Logo" src="assets/Images/Logo2.png" alt="">
+        </div>
+    </div>
+    <nz-form-item>
+
+        <nz-form-control nzErrorTip="Ingrese codigo enviado a su correo!">
+        <nz-input-group nzPrefixIcon="user">
+            <input type="text" nz-input formControlName="code" placeholder="Codigo enviado a correo" nzBorderless>
+        </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+
+    <button [disabled]="validateForm.invalid" nz-button class="login-form-button login-form-margin" [nzType]="'primary'" (click)="submitForm()">Verificar</button>
+    <nz-countdown [nzValue]="deadline" [nzTitle]="'Codigo expira en: '" style="text-align: center;"></nz-countdown>
+    <a [routerLink]="['/login/register']" style="text-align: center;"> <p>Registrate ahora!</p> </a>
+    <a [routerLink]="['/login']"  style="text-align: center;"> <p>Iniciar sesion</p> </a>
+    <a [routerLink]="['/login/generate-code']"  style="text-align: center;"> <p>Atras</p> </a>
+
+</form>
