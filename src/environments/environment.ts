@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api: "http://RIO6SPSSM1:3000/"
+  api: "http://localhost:3000/"
 };
 
 /*
