@@ -71,10 +71,7 @@ export class ReportsComponent implements OnInit {
   hora = this.horas.getHours();
   minuto = this.horas.getMinutes();
   segundos = this.horas.getSeconds();
-  horaFormateada = this.hora + ':' + this.minuto + ':' + this.segundos;
-
-
-
+  horaFormateada = '';
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -147,9 +144,11 @@ export class ReportsComponent implements OnInit {
 
     // Obtén el mes y el año de la fecha inicial
     this.mes = this.meses[this.fechaInicial.getMonth()];
-    const anio = this.fechaInicial.getFullYear();
-
-    // Resto de tu código...
+    this.anio = this.fechaInicial.getFullYear();
+    this.hora = this.fechaInicial.getHours();
+    this.minuto = this.fechaInicial.getMinutes();
+    this.segundos = this.fechaInicial.getSeconds();
+    this.horaFormateada = this.hora + ':' + this.minuto + ':' + this.segundos;
     this.dates = {
       from: result[0],
       to: result[1],
