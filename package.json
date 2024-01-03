@@ -1,6 +1,7 @@
 {
   "name": "gestion-electrica-front-end-test",
   "version": "0.0.0",
+  "homepage": "http://RIO-SPINT1/Constancias/",
   "engines": {
     "node": "16.14.2"
   },

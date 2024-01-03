@@ -1,4 +1,4 @@
 export const environment =  {
   production: true,
-  api:'http://JOKSAN-IT:3000/'
+  api:'http://RIO6SPSSM1:3000/'
 };

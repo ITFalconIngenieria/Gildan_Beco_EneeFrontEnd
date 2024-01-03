@@ -7,7 +7,7 @@
   "newProjectRoot": "projects",
   "projects": {
     "GestionElectrica_FrontEnd_Test": {
-      
+
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -21,6 +21,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "baseHref": "/Constancias/",
             "allowedCommonJsDependencies": [
               "lodash",
                "rxjs-compat"
