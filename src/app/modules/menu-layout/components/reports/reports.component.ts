@@ -110,7 +110,7 @@ export class ReportsComponent implements OnInit {
           fechaControl.disable();
           break;
         case 'estaSemana':
-          this.fechaInicial = startOfWeek(new Date());
+          this.fechaInicial = addDays(startOfWeek(new Date()),1);
           this.fechaFinal = new Date();
           fechaControl.disable();
           break;
