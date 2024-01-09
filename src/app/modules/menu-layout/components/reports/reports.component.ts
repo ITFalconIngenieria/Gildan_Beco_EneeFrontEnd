@@ -100,7 +100,7 @@ export class ReportsComponent implements OnInit {
       switch (selectedPeriod) {
         case 'hoy':
           this.fechaInicial = new Date();
-          this.fechaFinal = addDays(new Date(), 1);
+          this.fechaFinal = addDays(new Date(),1) ;
           fechaControl.disable();
           break;
 
@@ -116,7 +116,7 @@ export class ReportsComponent implements OnInit {
           break;
         case 'esteMes':
           this.fechaInicial = startOfMonth(new Date());
-          this.fechaFinal = addDays(endOfMonth(new Date()), 1);
+          this.fechaFinal = new Date();
           fechaControl.disable();
           break;
         case 'mesAnterior':
