@@ -285,11 +285,44 @@
       <tbody>
         <tr *ngFor="let item of listOfData">
           <td><strong>Energía Activa</strong></td>
-          <td>{{ item.energiaActivaEG.toString() | number:'1.0':'en-US'}} kWh</td>
+          <td>{{+item.energiaActivaEG | number:'1.0':'en-US'}} kWh</td>
         </tr>
         <tr *ngFor="let item of listOfData">
           <td><strong>Energía Reactiva</strong></td>
-          <td>{{ item.energiaReactivaEG.toString() | number:'1.0':'en-US'}} kVarh</td>
+          <td>{{+item.energiaReactivaEG | number:'1.0':'en-US'}} kVarh</td>
+        </tr>
+        <tr *ngFor="let item of listOfData">
+          <td><strong>Factor de Potencia</strong></td>
+          <td colspan="5" class="demanda">{{+item.factorPotenciaEG | number:'1.0':'en-US'}}</td>
+        </tr>
+        <tr *ngFor="let item of listOfData">
+          <td><strong>Demanda</strong></td>
+          <td colspan="5" class="demanda">{{+item.demandaEG | number:'1.0':'en-US'}} kWh</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+    <table>
+      <thead>
+        <tr>
+          <th colspan="5" class="titles">
+            <h2>TOTAL DE CONSUMO GILDAN</h2>
+          </th>
+        </tr>
+        <tr>
+          <th>Medición</th>
+          <th>Consumo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listOfData">
+          <td><strong>Energía Activa</strong></td>
+          <td>{{ (+item.energiaActivaEG + +item.energiaActivaBG) | number:'1.0':'en-US' }} kWh</td>
+        </tr>
+        <tr *ngFor="let item of listOfData">
+          <td><strong>Energía Reactiva</strong></td>
+          <td>{{(+item.energiaReactivaEG + +item.energiaReactivaBG) | number:'1.0':'en-US'}} kVarh</td>
         </tr>
         <tr *ngFor="let item of listOfData">
           <td><strong>Factor de Potencia</strong></td>
@@ -297,7 +330,7 @@
         </tr>
         <tr *ngFor="let item of listOfData">
           <td><strong>Demanda</strong></td>
-          <td colspan="5" class="demanda">{{ item.demandaEG.toString() | number:'1.0':'en-US'}} kWh</td>
+          <td colspan="5" class="demanda">{{(+item.demandaEG + +item.demandaBG)| number:'1.0':'en-US'}} kWh</td>
         </tr>
       </tbody>
     </table>

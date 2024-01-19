@@ -62,4 +62,9 @@ export interface ReportData {
   rolloverReactivaT577R: boolean;
   rolloverReactivaT578P: boolean;
   rolloverReactivaT578R: boolean;
+
+  sumaEneeBecoActiva:Number;
+  sumaEneeBecoReactiva:Number;
+  sumaDemandasEneeBeco:Number;
+
 }

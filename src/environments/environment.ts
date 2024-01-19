@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api: "http://JOKSAN-IT:3000/"
+  api: "http://rio-spint1:3000/"
 };
 
 /*
