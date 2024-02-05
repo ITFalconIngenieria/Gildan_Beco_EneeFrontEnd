@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportsService } from './service/reports.service';
 import { ReportData } from 'src/Core/interfaces/report.interface';
+import { ReportData2 } from 'src/Core/interfaces/reportDiario.interface';
 import { NotificationService } from '@shared/services/notification.service';
 import { formatDate } from '@angular/common';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 import { constancias } from 'src/Core/interfaces/constancia.interface';
 import {
   FormBuilder,
@@ -35,15 +38,20 @@ import html2canvas from 'html2canvas';
 export class ReportsComponent implements OnInit {
   fechaInicial: Date = new Date();
   fechaFinal: Date = new Date();
+
   isConsulted = false;
   resp: ReportData | null = null;
   listOfData: ReportData[] = [];
+  listOfData2: ReportData2[] = [];
   validateError: boolean = false;
   generateInvoicesForm!: FormGroup;
   pipe = new DatePipe('en-US');
   isLoading: boolean = false;
   dates: { from: any; to: any } = { from: '', to: '' };
-  mes:string = '';
+  mes: string = '';
+
+
+
   initialDate = new Date(
     formatDate(
       new Date().toISOString(),
@@ -64,6 +72,11 @@ export class ReportsComponent implements OnInit {
     "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
     "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
   ];
+  FechaEmision = new Date();
+  ANIO = this.FechaEmision.getFullYear();
+  MES = this.meses[this.FechaEmision.getMonth()];
+  DIA = this.FechaEmision.getDate();
+
 
   fecha = new Date(this.fechaInicial);
   anio = this.fecha.getFullYear();
@@ -79,9 +92,10 @@ export class ReportsComponent implements OnInit {
     private notificationService: NotificationService,
     private nzMessageService: NzMessageService,
     private datePipe: DatePipe,
-    private fb: FormBuilder
+    private fb: FormBuilder,
 
-  ) {}
+  ) { }
+
   ngOnInit(): void {
     this.GenerateInvoicesCleanForm();
 
@@ -98,19 +112,13 @@ export class ReportsComponent implements OnInit {
     const fechaControl = this.generateInvoicesForm.get('fecha');
     if (fechaControl) {
       switch (selectedPeriod) {
-        case 'hoy':
-          this.fechaInicial = new Date();
-          this.fechaFinal = addDays(new Date(),1) ;
-          fechaControl.disable();
-          break;
-
         case 'ayer':
           this.fechaInicial = addDays(new Date(), -1);
           this.fechaFinal = new Date();
           fechaControl.disable();
           break;
         case 'estaSemana':
-          this.fechaInicial = addDays(startOfWeek(new Date()),1);
+          this.fechaInicial = addDays(startOfWeek(new Date()), 1);
           this.fechaFinal = new Date();
           fechaControl.disable();
           break;
@@ -148,24 +156,53 @@ export class ReportsComponent implements OnInit {
     this.hora = this.fechaInicial.getHours();
     this.minuto = this.fechaInicial.getMinutes();
     this.segundos = this.fechaInicial.getSeconds();
-    this.horaFormateada = this.hora + ':' + this.minuto + ':' + this.segundos;
+    this.horaFormateada = this.hora + '-' + this.minuto + '-' + this.segundos;
     this.dates = {
       from: result[0],
       to: result[1],
     };
   }
 
-
   GenerateInvoicesCleanForm() {
     this.generateInvoicesForm = this.fb.group({
       periodo: ['seleccionar', [Validators.required]],
-      reporte: ['reporte', [Validators.required]],
-      // fecha: [ '', [Validators.required]],
       fecha: [{ value: '', disabled: true }, [Validators.required]],
+      tipoReporte: ['reporte', [Validators.required]]
     });
   }
 
+
+  validateForm(): boolean {
+    let periodoSeleccionado = this.generateInvoicesForm.value.periodo;
+    let tipoReporteSeleccionado = this.generateInvoicesForm.value.tipoReporte;
+
+    if (!periodoSeleccionado || periodoSeleccionado === 'seleccionar') {
+      this.notificationService.createNotification(
+        'error',
+        'Falló',
+        `Seleccione un Rango de Fechas 😓`
+      );
+      return false;
+    }
+
+    if (!tipoReporteSeleccionado || tipoReporteSeleccionado === 'reporte') {
+      this.notificationService.createNotification(
+        'error',
+        'Falló',
+        `Seleccione un tipo de Reporte 😓`
+      );
+      return false;
+    }
+
+    return true;
+  }
+
+
+
   submitForm() {
+    if (!this.validateForm()) {
+      return;
+    }
     let isLoading = true;
     this.nzMessageService
       .loading('Acción en progreso', {
@@ -178,7 +215,7 @@ export class ReportsComponent implements OnInit {
         ),
         concatMap(() => this.nzMessageService.info('Carga finalizada').onClose!)
       )
-      .subscribe(() => {});
+      .subscribe(() => { });
 
     let generateFacturaSchema1 = {
       fechaInicial: '',
@@ -217,10 +254,11 @@ export class ReportsComponent implements OnInit {
     }
     let { fechaInicial } = generateFacturaSchema1;
     let { fechaFinal } = generateFacturaSchema2;
-
+    let reporte = this.generateInvoicesForm.value.tipoReporte;
     this.reportService
-      .getDataMedidores(fechaInicial, fechaFinal)
+      .getDataMedidores(fechaInicial, fechaFinal, reporte)
       .subscribe((result: any) => {
+        console.log("resulllt------ ", result)
         if (result.error) {
           this.notificationService.createNotification(
             'error',
@@ -228,73 +266,103 @@ export class ReportsComponent implements OnInit {
             `${result.error} 😓`
           );
           isLoading = false;
-          this.isConsulted=false;
+          this.isConsulted = false;
         } else {
-          if (result.dataM && result.dataM.length > 0) {
-            const primerElemento = result.dataM[0];
-            this.listOfData = [primerElemento];
+          console.log(reporte);
+          if (reporte == 'resumen') {
+            if (result.dataM?.length > 0) {
+              const primerElemento = result.dataM[0];
+              this.listOfData = [primerElemento];
+              this.notificationService.createMessage(
+                'success',
+                'La acción se ejecutó con éxito 😎'
+              );
+              this.isConsulted = true;
+              isLoading = false;
+            } else {
+              this.notificationService.createNotification(
+                'error',
+                'No existen lecturas para este periodo',
+                '😓'
+              );
+              this.isConsulted = false;
+              isLoading = false;
+            }
+          }
 
-            this.notificationService.createMessage(
-              'success',
-              'La acción se ejecutó con éxito 😎'
-            );
-            this.isConsulted=true;
-            isLoading = false;
-          } else {
-            this.notificationService.createNotification(
-              'error',
-              'No existen lecturas para este periodo',
-              '😓'
-            );
-            this.isConsulted=false;
-            isLoading = false;
+          if (reporte == 'diario') {
+            if (result.Energiadiaria?.length > 0 && reporte == 'diario') {
+              this.listOfData2 = result.Energiadiaria;
+              console.log(" list data 2", this.listOfData2);
+              this.notificationService.createMessage(
+                'success',
+                'La acción se ejecutó con éxito 😎'
+              );
+              this.isConsulted = true;
+              isLoading = false;
+            } else {
+              this.notificationService.createNotification(
+                'error',
+                'No existen lecturas para este periodo2',
+                '😓'
+              );
+              this.isConsulted = false;
+              isLoading = false;
+            }
           }
         }
       });
   }
 
-  // public downloadPdf() {
-  //   const data = document.querySelector('.info') as HTMLElement;
-  //   html2canvas(data).then((canvas) => {
-  //     const imgWidth = 208;
-  //     const pageHeight = 295;
-  //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  //     const heightLeft = imgHeight;
-  //     const contentDataURL = canvas.toDataURL('image/png');
-  //     let pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-  //     let position = 0;
-  //     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-  //     pdf.save('BECO-GILDAN-ENEE '+this.mes+' '+this.anio+ ' '+this.horaFormateada+'.pdf');
-  //   });
-  // }
-
-
-
   public downloadPdf() {
-    const data = document.querySelector('.info') as HTMLElement;
-    html2canvas(data).then((canvas) => {
-    const imgWidth = 208;
-    const pageHeight = 295;
-    let imgHeight = (canvas.height * imgWidth) / canvas.width;
-    let heightLeft = imgHeight;
-    let contentDataURL = canvas.toDataURL('image/png');
-    let pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-    let position = 0;
+    let tipoReporteSeleccionado = this.generateInvoicesForm.value.tipoReporte;
+    if (tipoReporteSeleccionado == 'resumen') {
+      const data = document.querySelector('.info') as HTMLElement;
+      html2canvas(data).then((canvas) => {
+        const imgWidth = 208;
+        const pageHeight = 295;
+        let imgHeight = (canvas.height * imgWidth) / canvas.width;
+        let heightLeft = imgHeight;
+        let contentDataURL = canvas.toDataURL('image/png');
+        let pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+        let position = 0;
 
-    pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
 
-    while (heightLeft >= 0) {
-     position = heightLeft - imgHeight;
-     pdf.addPage();
-     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-     heightLeft -= pageHeight;
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+        pdf.save('BECO-ENEE GILDAN ' + this.mes + ' ' + this.anio + ' ' + this.horaFormateada + '.pdf');
+      });
+    }
+    if(tipoReporteSeleccionado == 'diario'){
+      const data = document.querySelector('.info2') as HTMLElement;
+      html2canvas(data).then((canvas) => {
+        const imgWidth = 208;
+        const pageHeight = 293;
+        let imgHeight = (canvas.height * imgWidth) / canvas.width;
+        let heightLeft = imgHeight;
+        let contentDataURL = canvas.toDataURL('image/png');
+        let pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+        let position = 0;
+
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+        pdf.save('BECO-ENEE GILDAN DIARIO ' + this.mes + ' ' + this.anio + ' ' + this.horaFormateada + '.pdf');
+      });
+
     }
 
-    pdf.save('BECO-GILDAN-ENEE '+ this.mes +' '+this.anio+ ' '+this.horaFormateada+'.pdf');
-    });
-   }
-
-
-
+  }
 }

@@ -19,9 +19,14 @@
   text-align: center;
 }
 .form-item {
-  margin-right: 10px; /* Ajusta el valor de margen según tu preferencia */
+  margin-right: 10px;
 }
-
+.emision{
+  font-weight: bold;
+  margin-top: 2%;
+  /* margin-left: 70%; */
+  margin-left: 68%;
+}
 
 .demanda {
   text-align: center;
@@ -59,6 +64,124 @@
 }
 
 .info tr:hover {
+  background-color: #ddd;
+}
+
+.container {
+  display: flex;
+  flex-direction: column; /* Agrega esto para apilar los hijos verticalmente */
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f5f5f5;
+  margin-top: 20px; /* Agrega margen entre el contenedor y los elementos */
+}
+.container2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ }
+
+ .Logo {
+  width: 100px; /* Ajusta el tamaño según lo necesites */
+  height: auto;
+ }
+ .half {
+  width: 50%;
+ }
+
+ .bold {
+  font-weight: bold;
+ }
+
+
+
+
+.container form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Agrega margen entre el formulario y el siguiente elemento */
+}
+
+.container nz-row {
+  margin-bottom: 20px;
+}
+
+.container nz-select {
+  width: 100%;
+  margin-bottom: 10px; /* Agrega margen entre el select y el siguiente elemento */
+}
+
+.container button {
+  width: 100%;
+}
+.info2 {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.info2 h1 {
+  text-align: center;
+  color: #000000;
+}
+
+.info2 h2 {
+  color: #ffffff;
+}
+
+.titles {
+  text-align: center;
+}
+.form-item {
+  margin-right: 10px;
+}
+.emision{
+  font-weight: bold;
+  margin-top: 2%;
+  /* margin-left: 70%; */
+  margin-left: 68%;
+}
+
+.demanda {
+  text-align: center;
+}
+
+.info2 table {
+  width: 100%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.info2 table,
+.info2 th,
+.info2 td {
+  border: 1px solid #ddd;
+}
+
+.info2 th,
+.info2 td {
+  padding: 15px;
+  text-align: center;
+}
+
+.info2 th {
+  background-color: #1f3599;
+  color: #ffffff;
+}
+
+.info2 tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.info2 tr:hover {
   background-color: #ddd;
 }
 

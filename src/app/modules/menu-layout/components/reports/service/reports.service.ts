@@ -11,8 +11,8 @@ export class ReportsService {
   private url = `${environment.api}`;
   constructor(private http: HttpClient) {}
 
-  getDataMedidores(fechaInicial:string, fechaFinal:string):Observable<ReportData>{
-    return this.http.get<ReportData>(`${this.url}/get-dataMedidores/${fechaInicial}/${fechaFinal}/`)
+  getDataMedidores(fechaInicial:string, fechaFinal:string, repote:string):Observable<ReportData>{
+    return this.http.get<ReportData>(`${this.url}/get-dataMedidores/${fechaInicial}/${fechaFinal}/${repote}/`)
   }
 
 }

@@ -5,7 +5,6 @@
         <div nz-col class="form-item">
           <nz-select formControlName="periodo" style="width: 150px">
             <nz-option nzValue="seleccionar" nzLabel="Periodo"></nz-option>
-            <nz-option nzValue="hoy" nzLabel="Hoy"></nz-option>
             <nz-option nzValue="ayer" nzLabel="Ayer"></nz-option>
             <nz-option nzValue="estaSemana" nzLabel="Esta Semana"></nz-option>
             <nz-option nzValue="esteMes" nzLabel="Este Mes"></nz-option>
@@ -14,6 +13,13 @@
           </nz-select>
           <nz-range-picker [nzShowTime]="false" style="width: 475px;" formControlName="fecha" [nzRanges]="ranges"
             ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
+        </div>
+        <div nz-col class="form-item">
+          <nz-select formControlName="tipoReporte" style="width: 150px">
+            <nz-option nzValue="reporte" nzLabel="Reporte"></nz-option>
+            <nz-option nzValue="resumen" nzLabel="Resumen"></nz-option>
+            <nz-option nzValue="diario" nzLabel="Diario"></nz-option>
+          </nz-select>
         </div>
         <div nz-col class="form-item">
           <button nz-button nzType="primary" nzSize="default" (click)="submitForm()">Consultar</button>
@@ -28,214 +34,219 @@
 </div>
 
 <div class="info">
-  <div *ngIf="listOfData && listOfData.length > 0">
+  <div *ngIf="listOfData && listOfData.length > 0 && generateInvoicesForm?.get('tipoReporte')?.value==='resumen'">
     <div class="page">
-    <div class="container2">
-      <img class="Logo" src="assets/Images/beco.png" alt="Logo BECO">
-      <h1 *ngFor="let item1 of listOfData">CONSTANCIA LECTURAS DE ENERGIA MES DE {{item1.mes}} DEL AÑO {{item1.anio}}
-      </h1>
-      <img class="Logo" src="assets/Images/enee1.jpg" alt="Logo ENEE">
+      <div class="container2">
+        <img class="Logo" src="assets/Images/beco.png" alt="Logo BECO">
+        <h1 *ngFor="let item1 of listOfData">CONSTANCIA LECTURAS DE ENERGIA MES DE {{item1.mes}} DEL AÑO {{item1.anio}}
+        </h1>
+        <img class="Logo" src="assets/Images/enee1.jpg" alt="Logo ENEE">
+      </div>
+      <br>
+      <table>
+        <tbody>
+          <tr>
+            <th colspan="3" class="titles">
+              <h2>DATOS DEL CLIENTE</h2>
+            </th>
+          </tr>
+          <tr>
+            <td class="half">
+              <strong>Nombre:</strong> GILDAN CHOLOMA TEXTILES S R L (TRANSFORMADOR T577 y T578)
+            </td>
+            <td class="half">
+              <strong>Dirección:</strong> Sector Rio Nance
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <table>
+        <tbody>
+          <tr>
+            <th colspan="3" class="titles">
+              <h2>DATOS DE CONSTANCIA</h2>
+            </th>
+          </tr>
+          <tr>
+            <td class="half" *ngFor="let item3 of listOfData">
+              <strong>Fecha Inicio:</strong> {{item3.fechaInicio}}
+            </td>
+            <td class="half" *ngFor="let item3 of listOfData">
+              <strong>Fecha Fin:</strong> {{item3.fechaFin}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <br>
+      <table>
+        <thead>
+          <tr>
+            <th colspan="5" class="titles">
+              <h2>LECTURAS DE MEDIDOR PRINCIPAL TRANSFORMADOR T577</h2>
+            </th>
+          </tr>
+          <tr>
+            <th>Medicion</th>
+            <th>Lecturas Anterior</th>
+            <th>Lecturas Actual</th>
+            <th>Diferencia</th>
+            <th>ROLLOVER</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of listOfData">
+            <td><strong>Energía Activa</strong></td>
+            <td>{{ item.energiaActivaInicialPT577.toString() | number:'1.0':'en-US'}} kWh</td>
+            <td>{{ item.energiaActivaFinalPT577.toString() | number:'1.0':'en-US'}} kWh</td>
+            <td>{{ item.diferenciaEnergiaActivaPT577.toString() | number:'1.0':'en-US'}} kWh</td>
+            <td>
+              <input type="checkbox" [checked]="item.rolloverActivaT577P" disabled />
+            </td>
+          </tr>
+          <tr *ngFor="let item of listOfData">
+            <td><strong>Energía Reactiva</strong></td>
+            <td>{{ item.energiaReactivaInicialPT577.toString() | number:'1.0':'en-US'}} kVArh</td>
+            <td>{{ item.energiaReactivaFinalPT577.toString() | number:'1.0':'en-US'}} kVArh</td>
+            <td>{{ item.diferenciaEnergiaReactivaPT577.toString() | number:'1.0':'en-US'}} kVArh</td>
+            <td>
+              <input type="checkbox" [checked]="item.rolloverReactivaT577P" disabled />
+            </td>
+          </tr>
+          <tr *ngFor="let item of listOfData">
+            <td><strong>Demanda</strong></td>
+            <td colspan="5" class="demanda">{{ item.demandaT577P.toString() | number:'1.0':'en-US'}} kW</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+
+      <table>
+        <thead>
+          <tr>
+            <th colspan="5" class="titles">
+              <h2>LECTURAS DE MEDIDOR RESPALDO TRANSFORMADOR T577</h2>
+            </th>
+          </tr>
+          <tr>
+            <th>Medición</th>
+            <th>Lecturas Anterior</th>
+            <th>Lecturas Actual</th>
+            <th>Diferencia</th>
+            <th>ROLLOVER</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of listOfData">
+            <td><strong>Energía Activa</strong></td>
+            <td>{{ item.energiaActivaInicialRT577.toString() | number:'1.0':'en-US'}} kWh</td>
+            <td>{{ item.energiaActivaFinalRT577.toString() | number:'1.0':'en-US'}} kWh</td>
+            <td>{{ item.diferenciaEnergiaActivaRT577.toString() | number:'1.0':'en-US'}} kWh</td>
+            <td>
+              <input type="checkbox" [checked]="item.rolloverActivaT577R" disabled />
+            </td>
+          </tr>
+          <tr *ngFor="let item of listOfData">
+            <td><strong>Energía Reactiva</strong></td>
+            <td>{{ item.energiaReactivaInicialRT577.toString() | number:'1.0':'en-US'}} kVArh</td>
+            <td>{{ item.energiaReactivaFinalRT577.toString() | number:'1.0':'en-US'}} kVArh</td>
+            <td>{{ item.diferenciaEnergiaReactivaRT577.toString() | number:'1.0':'en-US'}} kVArh</td>
+            <td>
+              <input type="checkbox" [checked]="item.rolloverReactivaT577R" disabled />
+            </td>
+          </tr>
+          <tr *ngFor="let item of listOfData">
+            <td><strong>Demanda</strong></td>
+            <td colspan="5" class="demanda">{{ item.demandaT577R.toString() | number:'1.0':'en-US'}} kW</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <br>
+      <table>
+        <thead>
+          <tr>
+            <th colspan="5" class="titles">
+              <h2>LECTURAS DE MEDIDOR PRINCIPAL TRANSFORMADOR T578</h2>
+            </th>
+          </tr>
+          <tr>
+            <th>Medición</th>
+            <th>Lecturas Anterior</th>
+            <th>Lecturas Actual</th>
+            <th>Diferencia</th>
+            <th>ROLLOVER</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of listOfData">
+            <td><strong>Energía Activa</strong></td>
+            <td>{{ item.activaInicialPT578.toString() | number:'1.0':'en-US'}} kWh</td>
+            <td>{{ item.activaFinalPT578.toString() | number:'1.0':'en-US'}} kWh</td>
+            <td>{{ item.diferenciaActivaPT578.toString() | number:'1.0':'en-US'}} kWh</td>
+            <td>
+              <input type="checkbox" [checked]="item.rolloverActivaT578P" disabled />
+            </td>
+          </tr>
+          <tr *ngFor="let item of listOfData">
+            <td><strong>Energía Reactiva</strong></td>
+            <td>{{ item.reactivaInicialPT578.toString() | number:'1.0':'en-US'}} kVArh</td>
+            <td>{{ item.reactivaFinalPT578.toString() | number:'1.0':'en-US'}} kVArh</td>
+            <td>{{ item.diferenciaReactivaPT578.toString() | number:'1.0':'en-US'}} kVArh</td>
+            <td>
+              <input type="checkbox" [checked]="item.rolloverReactivaT578P" disabled />
+            </td>
+          </tr>
+          <tr *ngFor="let item of listOfData">
+            <td><strong>Demanda</strong></td>
+            <td colspan="5" class="demanda">{{ item.demandaT578P.toString() | number:'1.0':'en-US'}} kW</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <table>
+        <thead>
+          <tr>
+            <th colspan="5" class="titles">
+              <h2>LECTURAS DE MEDIDOR RESPALDO TRANSFORMADOR T578</h2>
+            </th>
+          </tr>
+          <tr>
+            <th>Medición</th>
+            <th>Lecturas Anterior</th>
+            <th>Lecturas Actual</th>
+            <th>Diferencia</th>
+            <th>ROLLOVER</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of listOfData">
+            <td><strong>Energía Activa</strong></td>
+            <td>{{ item.activaInicialRT578.toString() | number:'1.0':'en-US'}} kWh</td>
+            <td>{{ item.activaFinalRT578.toString() | number:'1.0':'en-US'}} kWh</td>
+            <td>{{ item.diferenciaActivaRT578.toString() | number:'1.0':'en-US'}} kWh</td>
+            <td>
+              <input type="checkbox" [checked]="item.rolloverActivaT578R" disabled />
+            </td>
+          </tr>
+          <tr *ngFor="let item of listOfData">
+            <td><strong>Energía Reactiva</strong></td>
+            <td>{{ item.reactivaInicialRT578.toString() | number:'1.0':'en-US'}} kVArh</td>
+            <td>{{ item.reactivaFinalRT578.toString() | number:'1.0':'en-US'}} kVArh</td>
+            <td>{{ item.diferenciaReactivaRT578.toString() | number:'1.0':'en-US'}} kVArh</td>
+            <td>
+              <input type="checkbox" [checked]="item.rolloverReactivaT578R" disabled />
+            </td>
+          </tr>
+          <tr *ngFor="let item of listOfData">
+            <td><strong>Demanda</strong></td>
+            <td colspan="5" class="demanda">{{ item.demandaT578R.toString() | number:'1.0':'en-US'}} kW</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <table>
-      <tbody>
-        <tr>
-          <th colspan="3" class="titles">
-            <h2>DATOS DEL CLIENTE</h2>
-          </th>
-        </tr>
-        <tr>
-          <td class="half">
-            <strong>Nombre:</strong> GILDAN CHOLOMA TEXTILES S R L (TRANSFORMADOR T577 y T578)
-          </td>
-          <td class="half">
-            <strong>Dirección:</strong> Sector Rio Nance
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table>
-      <tbody>
-        <tr>
-          <th colspan="3" class="titles">
-            <h2>DATOS DE CONSTANCIA</h2>
-          </th>
-        </tr>
-        <tr>
-          <td class="half" *ngFor="let item3 of listOfData">
-            <strong>Fecha Inicio:</strong> {{item3.fechaInicio}}
-          </td>
-          <td class="half" *ngFor="let item3 of listOfData">
-            <strong>Fecha Fin:</strong> {{item3.fechaFin}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table>
-      <thead>
-        <tr>
-          <th colspan="5" class="titles">
-            <h2>LECTURAS DE MEDIDOR PRINCIPAL TRANSFORMADOR T577</h2>
-          </th>
-        </tr>
-        <tr>
-          <th>Medicion</th>
-          <th>Lecturas Anterior</th>
-          <th>Lecturas Actual</th>
-          <th>Diferencia</th>
-          <th>ROLLOVER</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of listOfData">
-          <td><strong>Energía Activa</strong></td>
-          <td>{{ item.energiaActivaInicialPT577.toString() | number:'1.0':'en-US'}} kWh</td>
-          <td>{{ item.energiaActivaFinalPT577.toString() | number:'1.0':'en-US'}} kWh</td>
-          <td>{{ item.diferenciaEnergiaActivaPT577.toString() | number:'1.0':'en-US'}} kWh</td>
-          <td>
-            <input type="checkbox" [checked]="item.rolloverActivaT577P"  disabled />
-          </td>
-        </tr>
-        <tr *ngFor="let item of listOfData">
-          <td><strong>Energía Reactiva</strong></td>
-          <td>{{ item.energiaReactivaInicialPT577.toString() | number:'1.0':'en-US'}} kVarh</td>
-          <td>{{ item.energiaReactivaFinalPT577.toString() | number:'1.0':'en-US'}} kVarh</td>
-          <td>{{ item.diferenciaEnergiaReactivaPT577.toString() | number:'1.0':'en-US'}} kVarh</td>
-          <td>
-            <input type="checkbox" [checked]="item.rolloverReactivaT577P"  disabled />
-          </td>
-        </tr>
-        <tr *ngFor="let item of listOfData">
-          <td><strong>Demanda</strong></td>
-          <td colspan="5" class="demanda">{{ item.demandaT577P.toString() | number:'1.0':'en-US'}} kW</td>
-        </tr>
-      </tbody>
-    </table>
-    <table>
-      <thead>
-        <tr>
-          <th colspan="5" class="titles">
-            <h2>LECTURAS DE MEDIDOR RESPALDO TRANSFORMADOR T577</h2>
-          </th>
-        </tr>
-        <tr>
-          <th>Medición</th>
-          <th>Lecturas Anterior</th>
-          <th>Lecturas Actual</th>
-          <th>Diferencia</th>
-          <th>ROLLOVER</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of listOfData">
-          <td><strong>Energía Activa</strong></td>
-          <td>{{ item.energiaActivaInicialRT577.toString() | number:'1.0':'en-US'}} kWh</td>
-          <td>{{ item.energiaActivaFinalRT577.toString() | number:'1.0':'en-US'}} kWh</td>
-          <td>{{ item.diferenciaEnergiaActivaRT577.toString() | number:'1.0':'en-US'}} kWh</td>
-          <td>
-            <input type="checkbox" [checked]="item.rolloverActivaT577R"  disabled />
-          </td>
-        </tr>
-        <tr *ngFor="let item of listOfData">
-          <td><strong>Energía Reactiva</strong></td>
-          <td>{{ item.energiaReactivaInicialRT577.toString() | number:'1.0':'en-US'}} kVarh</td>
-          <td>{{ item.energiaReactivaFinalRT577.toString() | number:'1.0':'en-US'}} kVarh</td>
-          <td>{{ item.diferenciaEnergiaReactivaRT577.toString() | number:'1.0':'en-US'}} kVarh</td>
-          <td>
-            <input type="checkbox" [checked]="item.rolloverReactivaT577R"  disabled />
-          </td>
-        </tr>
-        <tr *ngFor="let item of listOfData">
-          <td><strong>Demanda</strong></td>
-          <td colspan="5" class="demanda">{{ item.demandaT577R.toString() | number:'1.0':'en-US'}} kW</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <table>
-      <thead>
-        <tr>
-          <th colspan="5" class="titles">
-            <h2>LECTURAS DE MEDIDOR PRINCIPAL TRANSFORMADOR T578</h2>
-          </th>
-        </tr>
-        <tr>
-          <th>Medición</th>
-          <th>Lecturas Anterior</th>
-          <th>Lecturas Actual</th>
-          <th>Diferencia</th>
-          <th>ROLLOVER</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of listOfData">
-          <td><strong>Energía Activa</strong></td>
-          <td>{{ item.activaInicialPT578.toString() | number:'1.0':'en-US'}} kWh</td>
-          <td>{{ item.activaFinalPT578.toString() | number:'1.0':'en-US'}} kWh</td>
-          <td>{{ item.diferenciaActivaPT578.toString() | number:'1.0':'en-US'}} kWh</td>
-          <td>
-            <input type="checkbox" [checked]="item.rolloverActivaT578P"  disabled />
-          </td>
-        </tr>
-        <tr *ngFor="let item of listOfData">
-          <td><strong>Energía Reactiva</strong></td>
-          <td>{{ item.reactivaInicialPT578.toString() | number:'1.0':'en-US'}} kVarh</td>
-          <td>{{ item.reactivaFinalPT578.toString() | number:'1.0':'en-US'}} kVarh</td>
-          <td>{{ item.diferenciaReactivaPT578.toString() | number:'1.0':'en-US'}} kVarh</td>
-          <td>
-            <input type="checkbox" [checked]="item.rolloverReactivaT578P"  disabled />
-          </td>
-        </tr>
-        <tr *ngFor="let item of listOfData">
-          <td><strong>Demanda</strong></td>
-          <td colspan="5" class="demanda">{{ item.demandaT578P.toString() | number:'1.0':'en-US'}} kW</td>
-        </tr>
-      </tbody>
-    </table>
-    <table>
-      <thead>
-        <tr>
-          <th colspan="5" class="titles">
-            <h2>LECTURAS DE MEDIDOR RESPALDO TRANSFORMADOR T578</h2>
-          </th>
-        </tr>
-        <tr>
-          <th>Medición</th>
-          <th>Lecturas Anterior</th>
-          <th>Lecturas Actual</th>
-          <th>Diferencia</th>
-          <th>ROLLOVER</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of listOfData">
-          <td><strong>Energía Activa</strong></td>
-          <td>{{ item.activaInicialRT578.toString() | number:'1.0':'en-US'}} kWh</td>
-          <td>{{ item.activaFinalRT578.toString() | number:'1.0':'en-US'}} kWh</td>
-          <td>{{ item.diferenciaActivaRT578.toString() | number:'1.0':'en-US'}} kWh</td>
-          <td>
-            <input type="checkbox" [checked]="item.rolloverActivaT578R"  disabled />
-          </td>
-        </tr>
-        <tr *ngFor="let item of listOfData">
-          <td><strong>Energía Reactiva</strong></td>
-          <td>{{ item.reactivaInicialRT578.toString() | number:'1.0':'en-US'}} kVarh</td>
-          <td>{{ item.reactivaFinalRT578.toString() | number:'1.0':'en-US'}} kVarh</td>
-          <td>{{ item.diferenciaReactivaRT578.toString() | number:'1.0':'en-US'}} kVarh</td>
-          <td>
-            <input type="checkbox" [checked]="item.rolloverReactivaT578R"  disabled />
-          </td>
-        </tr>
-        <tr *ngFor="let item of listOfData">
-          <td><strong>Demanda</strong></td>
-          <td colspan="5" class="demanda">{{ item.demandaT578R.toString() | number:'1.0':'en-US'}} kW</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="page">
+    <br>
     <table>
       <thead>
         <tr>
@@ -255,7 +266,7 @@
         </tr>
         <tr *ngFor="let item of listOfData">
           <td><strong>Energía Reactiva</strong></td>
-          <td>{{ item.energiaReactivaBG.toString() | number:'1.0':'en-US'}} kVarh</td>
+          <td>{{ item.energiaReactivaBG.toString() | number:'1.0':'en-US'}} kVArh</td>
         </tr>
         <tr *ngFor="let item of listOfData">
           <td><strong>Factor de Potencia</strong></td>
@@ -267,9 +278,6 @@
         </tr>
       </tbody>
     </table>
-    <br>
-    <br>
-
     <table>
       <thead>
         <tr>
@@ -289,7 +297,7 @@
         </tr>
         <tr *ngFor="let item of listOfData">
           <td><strong>Energía Reactiva</strong></td>
-          <td>{{+item.energiaReactivaEG | number:'1.0':'en-US'}} kVarh</td>
+          <td>{{+item.energiaReactivaEG | number:'1.0':'en-US'}} kVArh</td>
         </tr>
         <tr *ngFor="let item of listOfData">
           <td><strong>Factor de Potencia</strong></td>
@@ -322,7 +330,7 @@
         </tr>
         <tr *ngFor="let item of listOfData">
           <td><strong>Energía Reactiva</strong></td>
-          <td>{{(+item.energiaReactivaEG + +item.energiaReactivaBG) | number:'1.0':'en-US'}} kVarh</td>
+          <td>{{(+item.energiaReactivaEG + +item.energiaReactivaBG) | number:'1.0':'en-US'}} kVArh</td>
         </tr>
         <tr *ngFor="let item of listOfData">
           <td><strong>Factor de Potencia</strong></td>
@@ -335,5 +343,93 @@
       </tbody>
     </table>
   </div>
+  <div class="emision" *ngIf="listOfData && listOfData.length > 0 && generateInvoicesForm?.get('tipoReporte')?.value=='resumen'">
+    <p>FECHA DE EMISION: {{ DIA }} de {{ MES }} del {{ ANIO }} {{ hora }}:{{ minuto }}:{{ segundos }}</p>
   </div>
 </div>
+
+
+<div class="info2">
+  <div *ngIf="listOfData2 && listOfData2.length > 0 && generateInvoicesForm?.get('tipoReporte')?.value==='diario'">
+    <div class="page">
+      <div class="container2">
+        <img class="Logo" src="assets/Images/beco.png" alt="Logo BECO">
+        <h1 *ngIf="listOfData2[0]">
+          CONSTANCIA LECTURAS DE ENERGIA MES DE {{listOfData2[0]?.mes}} DEL AÑO {{listOfData2[0]?.anio}}
+        </h1>
+        <img class="Logo" src="assets/Images/enee1.jpg" alt="Logo ENEE">
+      </div>
+      <table>
+        <tbody>
+          <tr>
+            <th colspan="3" class="titles">
+              <h2>DATOS DEL CLIENTE</h2>
+            </th>
+          </tr>
+          <tr>
+            <td class="half">
+              <strong>Nombre:</strong> GILDAN CHOLOMA TEXTILES S R L (TRANSFORMADOR T577 y T578)
+            </td>
+            <td class="half">
+              <strong>Dirección:</strong> Sector Rio Nance
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <tbody>
+          <tr>
+            <th colspan="3" class="titles">
+              <h2>DATOS DE CONSTANCIA</h2>
+            </th>
+          </tr>
+          <tr>
+            <td class="half">
+              <strong>Fecha Inicio:</strong> {{ listOfData2[0]?.Date | date: 'yyyy-MM-dd' : 'UTC' }}
+            </td>
+            <td class="half">
+              <strong>Fecha Fin:</strong> {{ listOfData2[listOfData2.length - 1]?.Date | date: 'yyyy-MM-dd' : 'UTC' }}
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <thead>
+          <tr>
+            <th colspan="8" class="titles">
+              <h2>LECTURAS DIARIA DE MEDIDORES T577 Y T578</h2>
+            </th>
+          </tr>
+          <tr>
+            <th>Nº</th>
+            <th style="width: 150px;">Fecha</th>
+            <th>Energia Activa BECO</th>
+            <th>Energia Reactiva BECO</th>
+            <th>Demanda Activa Maxima BECO</th>
+            <th>Energia Activa ENEE</th>
+            <th>Energia Reactiva ENEE</th>
+            <th>Demanda Activa Maxima ENEE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of listOfData2">
+            <td><strong>{{item.RowNumber}}</strong></td>
+            <td><strong>{{item.Date | date: 'yyyy-MM-dd' : 'UTC' }}</strong></td>
+            <td><strong>{{ item.BecosaActiveEnergy.toString() | number:'1.2-2' }}</strong></td>
+            <td><strong>{{ item.BecosaReactiveEnergy.toString() | number:'1.2-2' }}</strong></td>
+            <td><strong>{{ item.BecosaMaximumActiveDemand.toString() | number:'1.2-2' }}</strong></td>
+            <td><strong>{{ item.EneeActiveEnergy.toString() | number:'1.2-2' }}</strong></td>
+            <td><strong>{{ item.EneeReactiveEnergy.toString() | number:'1.2-2' }}</strong></td>
+            <td><strong>{{ item.EneeMaximumActiveDemand.toString() | number:'1.2-2' }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="emision"
+      *ngIf="listOfData2 && listOfData2.length> 0 && generateInvoicesForm?.get('tipoReporte')?.value==='diario'">
+      <p>FECHA DE EMISION: {{ DIA }} de {{ MES }} del {{ ANIO }} {{ hora }}:{{ minuto }}:{{ segundos }}</p>
+    </div>
+
+  </div>
