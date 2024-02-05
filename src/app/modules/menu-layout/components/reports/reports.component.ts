@@ -258,7 +258,6 @@ export class ReportsComponent implements OnInit {
     this.reportService
       .getDataMedidores(fechaInicial, fechaFinal, reporte)
       .subscribe((result: any) => {
-        console.log("resulllt------ ", result)
         if (result.error) {
           this.notificationService.createNotification(
             'error',
@@ -268,7 +267,6 @@ export class ReportsComponent implements OnInit {
           isLoading = false;
           this.isConsulted = false;
         } else {
-          console.log(reporte);
           if (reporte == 'resumen') {
             if (result.dataM?.length > 0) {
               const primerElemento = result.dataM[0];
@@ -293,7 +291,6 @@ export class ReportsComponent implements OnInit {
           if (reporte == 'diario') {
             if (result.Energiadiaria?.length > 0 && reporte == 'diario') {
               this.listOfData2 = result.Energiadiaria;
-              console.log(" list data 2", this.listOfData2);
               this.notificationService.createMessage(
                 'success',
                 'La acción se ejecutó con éxito 😎'
