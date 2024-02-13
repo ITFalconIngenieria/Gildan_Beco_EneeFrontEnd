@@ -318,7 +318,7 @@ export class ReportsComponent implements OnInit {
       html2canvas(data).then((canvas) => {
         const imgWidth = 208;
         const pageHeight = 295;
-        let imgHeight = (canvas.height * imgWidth) / canvas.width;
+        let imgHeight = (4763* imgWidth) / 2399;
         let heightLeft = imgHeight;
         let contentDataURL = canvas.toDataURL('image/png');
         let pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
@@ -340,8 +340,10 @@ export class ReportsComponent implements OnInit {
       const data = document.querySelector('.info2') as HTMLElement;
       html2canvas(data).then((canvas) => {
         const imgWidth = 208;
-        const pageHeight = 293;
-        let imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const pageHeight = 295.5;
+
+        console.log(canvas.height , canvas.width)
+        let imgHeight = (2737 * imgWidth) / 1452;
         let heightLeft = imgHeight;
         let contentDataURL = canvas.toDataURL('image/png');
         let pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });

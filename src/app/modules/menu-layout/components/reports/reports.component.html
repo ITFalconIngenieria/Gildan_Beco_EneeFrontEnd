@@ -60,7 +60,6 @@
           </tr>
         </tbody>
       </table>
-      <br>
       <table>
         <tbody>
           <tr>
@@ -78,8 +77,6 @@
           </tr>
         </tbody>
       </table>
-      <br>
-      <br>
       <table>
         <thead>
           <tr>
@@ -120,8 +117,6 @@
           </tr>
         </tbody>
       </table>
-      <br>
-
       <table>
         <thead>
           <tr>
@@ -162,8 +157,6 @@
           </tr>
         </tbody>
       </table>
-      <br>
-      <br>
       <table>
         <thead>
           <tr>
@@ -204,7 +197,6 @@
           </tr>
         </tbody>
       </table>
-      <br>
       <table>
         <thead>
           <tr>
@@ -246,7 +238,7 @@
         </tbody>
       </table>
     </div>
-    <br>
+
     <table>
       <thead>
         <tr>
@@ -274,10 +266,11 @@
         </tr>
         <tr *ngFor="let item of listOfData">
           <td><strong>Demanda</strong></td>
-          <td colspan="5" class="demanda">{{ item.demandaBG.toString() | number:'1.0':'en-US'}} kWh</td>
+          <td colspan="5" class="demanda">{{ item.demandaBG.toString() | number:'1.0':'en-US'}} kW</td>
         </tr>
       </tbody>
     </table>
+    <br>
     <table>
       <thead>
         <tr>
@@ -305,12 +298,10 @@
         </tr>
         <tr *ngFor="let item of listOfData">
           <td><strong>Demanda</strong></td>
-          <td colspan="5" class="demanda">{{+item.demandaEG | number:'1.0':'en-US'}} kWh</td>
+          <td colspan="5" class="demanda">{{+item.demandaEG | number:'1.0':'en-US'}} kW</td>
         </tr>
       </tbody>
     </table>
-
-
     <table>
       <thead>
         <tr>
@@ -338,7 +329,7 @@
         </tr>
         <tr *ngFor="let item of listOfData">
           <td><strong>Demanda</strong></td>
-          <td colspan="5" class="demanda">{{(+item.demandaEG + +item.demandaBG)| number:'1.0':'en-US'}} kWh</td>
+          <td colspan="5" class="demanda">{{(+item.demandaEG + +item.demandaBG)| number:'1.0':'en-US'}} kW</td>
         </tr>
       </tbody>
     </table>
